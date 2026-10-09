@@ -1,0 +1,33 @@
+name: Portfolio checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm audit --audit-level=high
+      - name: Check production release
+        shell: bash
+        run: |
+          npm run audit:serve > "$RUNNER_TEMP/portfolio-audit-server.log" 2>&1 &
+          audit_pid=$!
+          trap 'kill "$audit_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run check:release
