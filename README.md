@@ -2,7 +2,7 @@
 
 A personal portfolio for Ahsan Qamar, featuring Flutter apps, machine learning experiments, and web projects. Built with React 19, TypeScript, Vite, and CSS.
 
-**Live website:** deployment in progress.
+**Live website:** [ahsanqamar.vercel.app](https://ahsanqamar.vercel.app)
 
 [GitHub profile](https://github.com/Ahsan-Qamar-Dev) · [LinkedIn](https://www.linkedin.com/in/ahsan-qamar-/) · [Email](mailto:ahsan.qamar2004@gmail.com)
 
@@ -44,6 +44,8 @@ The production output is `dist/`. Publish only that directory. Do not publish th
 
 ## Deployment
 
+The portfolio is deployed on Vercel Hobby at **https://ahsanqamar.vercel.app**. Pushes to `main` automatically trigger production deployments.
+
 Vercel: import this GitHub repository, use the Vite framework preset, build with `npm run build`, and publish `dist`. `vercel.json` supplies routes, cache settings, and security headers.
 
 Netlify: import the repository; `netlify.toml` supplies the build configuration. Redirects and headers are included in the build output.
@@ -69,7 +71,7 @@ npm run audit:serve
 npm run check:release
 ```
 
-The audit server binds only to localhost. GitHub Actions runs the same release checks automatically. Live-host HTTPS, header enforcement, and browser checks must also be verified after deployment.
+The audit server binds only to localhost. GitHub Actions runs the same release checks automatically. Live-host HTTPS, security headers, all five routes, CV integrity, and private-file 404 checks passed on the published Vercel site. Browser evidence and limits are recorded in the audit.
 
 ## Updating content
 

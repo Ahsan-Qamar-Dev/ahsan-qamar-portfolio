@@ -1,10 +1,10 @@
 # Portfolio deployment audit
 
-Completed locally on 9 October 2026. This is a pre-deployment review of this static portfolio, not a guarantee of zero vulnerabilities or a hosted penetration test. No website was published.
+Completed locally and verified on Vercel on 9 October 2026. Published website: [ahsanqamar.vercel.app](https://ahsanqamar.vercel.app). This review covers the static portfolio and the checks listed below; it is not a guarantee of zero vulnerabilities or a comprehensive penetration test.
 
 ## Result
 
-No blocking application issue was identified in the checks executed. The production build, dependency audit, static release checks, and 45 Chromium responsive checks pass. Actual hosting configuration, HTTPS, and other browser engines still require verification after deployment.
+No blocking application issue was identified in the checks executed. The production build, dependency audit, static release checks, and 45 Chromium responsive checks pass. Live HTTPS, response headers, route reloads, PDF integrity, and private-path checks also pass. Other browser engines have not been executed.
 
 ## Checks performed
 
@@ -39,12 +39,22 @@ No blocking application issue was identified in the checks executed. The product
 
 The website exposes your name, professional background, Lahore location, portrait, Gmail, GitHub/LinkedIn links, and CV. You explicitly chose to keep +92 306 5532235 in the downloadable CV, and it also appears in the CV preview. Public email/phone details can be collected by visitors or bots; they are intentional content, not hidden leaks.
 
-## Limits and remaining deployment checks
+## Live deployment verification
+
+- Vercel Hobby deployment succeeded at https://ahsanqamar.vercel.app, using Vite, npm run build, and dist. The official GitHub app was authorized for only Ahsan-Qamar-Dev/ahsan-qamar-portfolio.
+- Fourteen live HTTP checks passed: five page routes return the application HTML over validated HTTPS with all seven configured security headers; seven private or missing paths return 404; HTTP redirects to HTTPS; and the PDF MIME type and SHA-256 match the original document.
+- Home, About, Projects, Experience, and CV were opened directly in Chromium at 390px and 1440px: ten cases with no horizontal overflow, broken loaded images, missing navigation links, or extra H1s. No console warnings or errors were observed.
+- The live Download PDF button successfully downloaded the CV. The preview uses the original PDF render.
+- GitHub Actions passed the production build, dependency audit, and release checks. The repository is pinned on the GitHub profile; the live URL appears in the repository About section, profile website, and profile README About section.
+- Pushes to main trigger Vercel production deployments. No analytics or Speed Insights integration was enabled.
+- Local evidence: research/hosted-checks.json, research/hosted-browser-checks.json, and research/screenshots/live-portfolio.jpg. These review files remain excluded from the public build and Git tracking.
+
+## Limits
 
 - Only the available Chromium in-app browser was executed. Firefox, Safari, Edge, iOS/Android browsers, assistive technologies, and real device behavior have not been directly tested.
 - Do not deploy the Vite dev server or the audit server. Use a managed static host and publish dist only. Server configuration can create exposures that this local code review cannot rule out.
-- Header generation follows [Vercel configuration](https://vercel.com/docs/project-configuration/vercel-json) and [Netlify custom headers](https://docs.netlify.com/manage/routing/headers/). Local HTTP checks use a test server that applies the same policy; they do not prove that a host applies these files correctly.
-- After publishing, verify the live response headers, HTTPS certificate/redirect, HSTS over HTTPS, every route reload, PDF download, missing asset 404s, host directory listing behavior, and any host-added analytics/scripts. A live URL is needed for those checks.
+- Header generation follows [Vercel configuration](https://vercel.com/docs/project-configuration/vercel-json) and [Netlify custom headers](https://docs.netlify.com/manage/routing/headers/). Local HTTP checks use a test server that applies the same policy. Live Vercel responses were separately checked and match the generated security policy.
+- Recheck live headers, routes, downloads, and exposure after changing hosting configuration, adding integrations, or replacing public assets. The executed live checks are recorded above.
 - The full-quality portrait remains about 2.1MB, deliberately preserving your supplied image. It may load slowly on constrained mobile connections; no throttled performance benchmark or Lighthouse score is claimed.
 - The static portfolio has no backend or user-input processing. Database injection, account authorization, server sessions, and CSRF checks are not applicable to this application. This review does not audit the separate projects linked from the portfolio.
 
